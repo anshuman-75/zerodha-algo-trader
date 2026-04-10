@@ -1,0 +1,43 @@
+[Unit]
+Description=Auto-Investor v3 — Claude + Zerodha Bot
+Documentation=https://github.com/anshuman/auto-investor
+After=network-online.target
+Wants=network-online.target
+StartLimitIntervalSec=600
+StartLimitBurst=5
+
+[Service]
+# ── User & working directory ──────────────────────────────
+User=anshuman
+WorkingDirectory=/home/anshuman/investor_v3
+
+# ── Python path (compiled from source on this server) ────
+ExecStart=/usr/local/bin/python3.11 /home/anshuman/investor_v3/auto_investor_v3.py
+
+# ── Restart policy ────────────────────────────────────────
+# Always restart if bot crashes or exits unexpectedly
+Restart=always
+
+# Wait 30 seconds before restarting (avoid rapid crash loops)
+RestartSec=30
+
+# ── Environment ───────────────────────────────────────────
+Environment=PYTHONUNBUFFERED=1
+Environment=TZ=Asia/Kolkata
+
+# ── Logging ───────────────────────────────────────────────
+# Logs go to journald — view with: journalctl -u investor -f
+StandardOutput=journal
+StandardError=journal
+SyslogIdentifier=investor
+
+# ── Timeouts ──────────────────────────────────────────────
+# Give bot 60 seconds to start up cleanly
+TimeoutStartSec=60
+
+# Give bot 30 seconds to shut down gracefully on stop
+TimeoutStopSec=30
+
+[Install]
+# Start automatically when server boots into multi-user mode
+WantedBy=multi-user.target

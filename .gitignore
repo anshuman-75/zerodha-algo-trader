@@ -1,0 +1,10 @@
+# Secrets & tokens
+config.py
+*.json
+*.env
+
+# Logs
+*.txt
+*.log
+__pycache__/
+*.pyc
